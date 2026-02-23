@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * The test suite for testing the SimpleBankAccount implementation
  */
-class SimpleBankAccountTest {
+abstract class SimpleBankAccountTest {
 
-    private static final int INITIAL_BALANCE = 0;
-    private static final int TEST_AMOUNT = 100;
-    private static final int HOLDER_ID = 1;
-    private static final int WRONG_HOLDER_ID = 2;
-    private AccountHolder accountHolder;
-    private BankAccount bankAccount;
+    protected static final int INITIAL_BALANCE = 0;
+    protected static final int TEST_AMOUNT = 100;
+    protected static final int HOLDER_ID = 1;
+    protected static final int WRONG_HOLDER_ID = 2;
+    protected AccountHolder accountHolder;
+    protected BankAccount bankAccount;
 
     @BeforeEach
     void beforeEach(){
@@ -51,7 +51,7 @@ class SimpleBankAccountTest {
         final int withdrawAmount = 70;
         bankAccount.deposit(accountHolder.id(), TEST_AMOUNT);
         bankAccount.withdraw(accountHolder.id(), withdrawAmount);
-        assertEquals(TEST_AMOUNT - withdrawAmount - SimpleBankAccount.WITHDRAWAL_FEE, bankAccount.getBalance());
+        assertEquals(TEST_AMOUNT - withdrawAmount, bankAccount.getBalance());
     }
 
     @Test
@@ -66,4 +66,7 @@ class SimpleBankAccountTest {
     void testNegativeWithdraw() {
         assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(accountHolder.id(), -TEST_AMOUNT));
     }
+
+    @BeforeEach
+    public abstract void init();
 }

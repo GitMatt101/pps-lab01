@@ -7,9 +7,8 @@ package example.model;
  */
 public class SimpleBankAccount implements BankAccount {
 
-    public static final int WITHDRAWAL_FEE = 1;
-    private double balance;
-    private final AccountHolder holder;
+    protected double balance;
+    protected final AccountHolder holder;
 
     public SimpleBankAccount(final AccountHolder holder, final double balance) {
         this.holder = holder;
@@ -35,14 +34,14 @@ public class SimpleBankAccount implements BankAccount {
         if (amount < 0)
             throw new IllegalArgumentException();
         if (checkUser(userID) && isWithdrawAllowed(amount))
-            this.balance -= (amount + WITHDRAWAL_FEE);
+            this.balance -= amount;
     }
 
-    private boolean isWithdrawAllowed(final double amount){
+    protected boolean isWithdrawAllowed(final double amount){
         return this.balance >= amount;
     }
 
-    private boolean checkUser(final int id) {
+    protected boolean checkUser(final int id) {
         return this.holder.id() == id;
     }
 }

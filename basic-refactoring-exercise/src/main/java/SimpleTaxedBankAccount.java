@@ -12,6 +12,8 @@ public class SimpleTaxedBankAccount extends SimpleBankAccount {
 
     @Override
     public void withdraw(final int id, double amount) {
+        if (amount <= 0)
+            return;
         amount += this.withdrawalFee;
         super.withdraw(id, amount);
     }

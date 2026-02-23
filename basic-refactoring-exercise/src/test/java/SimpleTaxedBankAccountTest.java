@@ -31,4 +31,11 @@ public class SimpleTaxedBankAccountTest extends SimpleBankAccountTest {
         bankAccount.withdraw(accountHolder.id(), invalidBalance);
         assertEquals(invalidBalance, bankAccount.getBalance());
     }
+
+    @Test
+    public void testWithdrawWithAmountZero() {
+        this.bankAccount.deposit(accountHolder.id(), TEST_AMOUNT);
+        this.bankAccount.withdraw(accountHolder.id(), 0);
+        assertEquals(TEST_AMOUNT, this.bankAccount.getBalance());
+    }
 }

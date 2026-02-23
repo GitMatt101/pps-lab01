@@ -3,7 +3,7 @@ import example.model.SimpleBankAccount;
 
 public class SimpleTaxedBankAccount extends SimpleBankAccount {
 
-    public final double withdrawalFee;
+    private final double withdrawalFee;
 
     public SimpleTaxedBankAccount(AccountHolder holder, double balance, double withdrawalFee) {
         super(holder, balance);

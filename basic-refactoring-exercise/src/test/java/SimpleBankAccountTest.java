@@ -10,44 +10,60 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class SimpleBankAccountTest {
 
+    private static final int INITIAL_BALANCE = 0;
+    private static final int TEST_AMOUNT = 100;
+    private static final int HOLDER_ID = 1;
+    private static final int WRONG_HOLDER_ID = 2;
     private AccountHolder accountHolder;
     private BankAccount bankAccount;
 
     @BeforeEach
     void beforeEach(){
-        accountHolder = new AccountHolder("Mario", "Rossi", 1);
-        bankAccount = new SimpleBankAccount(accountHolder, 0);
+        accountHolder = new AccountHolder("Mario", "Rossi", HOLDER_ID);
+        bankAccount = new SimpleBankAccount(accountHolder, INITIAL_BALANCE);
     }
 
     @Test
     void testInitialBalance() {
-        assertEquals(0, bankAccount.getBalance());
+        assertEquals(INITIAL_BALANCE, bankAccount.getBalance());
     }
 
     @Test
     void testDeposit() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        assertEquals(100, bankAccount.getBalance());
+        bankAccount.deposit(accountHolder.id(), TEST_AMOUNT);
+        assertEquals(TEST_AMOUNT, bankAccount.getBalance());
     }
 
     @Test
     void testWrongDeposit() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        bankAccount.deposit(2, 50);
-        assertEquals(100, bankAccount.getBalance());
+        bankAccount.deposit(accountHolder.id(), TEST_AMOUNT);
+        bankAccount.deposit(WRONG_HOLDER_ID, TEST_AMOUNT);
+        assertEquals(TEST_AMOUNT, bankAccount.getBalance());
+    }
+
+    @Test
+    void testNegativeDeposit() {
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(accountHolder.id(), -TEST_AMOUNT));
     }
 
     @Test
     void testWithdraw() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        bankAccount.withdraw(accountHolder.id(), 70);
-        assertEquals(30, bankAccount.getBalance());
+        final int withdrawAmount = 70;
+        bankAccount.deposit(accountHolder.id(), TEST_AMOUNT);
+        bankAccount.withdraw(accountHolder.id(), withdrawAmount);
+        assertEquals(TEST_AMOUNT - withdrawAmount - SimpleBankAccount.WITHDRAWAL_FEE, bankAccount.getBalance());
     }
 
     @Test
     void testWrongWithdraw() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        bankAccount.withdraw(2, 70);
-        assertEquals(100, bankAccount.getBalance());
+        final int withdrawAmount = 70;
+        bankAccount.deposit(accountHolder.id(), TEST_AMOUNT);
+        bankAccount.withdraw(WRONG_HOLDER_ID, withdrawAmount);
+        assertEquals(TEST_AMOUNT, bankAccount.getBalance());
+    }
+
+    @Test
+    void testNegativeWithdraw() {
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(accountHolder.id(), -TEST_AMOUNT));
     }
 }

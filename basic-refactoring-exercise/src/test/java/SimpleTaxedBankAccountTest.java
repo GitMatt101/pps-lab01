@@ -3,6 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SimpleTaxedBankAccountTest extends SimpleBankAccountTest {
 
@@ -22,5 +23,13 @@ public class SimpleTaxedBankAccountTest extends SimpleBankAccountTest {
         bankAccount.deposit(accountHolder.id(), TEST_AMOUNT);
         bankAccount.withdraw(accountHolder.id(), withdrawAmount);
         assertEquals(TEST_AMOUNT - withdrawAmount - WITHDRAWAL_FEE, bankAccount.getBalance());
+    }
+
+    @Test
+    public void testWithdrawWithoutEnoughBalanceForFee() {
+        double invalidBalance = 1;
+        bankAccount.deposit(accountHolder.id(), invalidBalance);
+        bankAccount.withdraw(accountHolder.id(), invalidBalance);
+        assertEquals(invalidBalance, bankAccount.getBalance());
     }
 }

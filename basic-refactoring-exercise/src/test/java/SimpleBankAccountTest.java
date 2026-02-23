@@ -18,7 +18,7 @@ abstract class SimpleBankAccountTest {
     protected BankAccount bankAccount;
 
     @BeforeEach
-    void beforeEach(){
+    void init(){
         accountHolder = new AccountHolder("Mario", "Rossi", HOLDER_ID);
         bankAccount = new SimpleBankAccount(accountHolder, INITIAL_BALANCE);
     }
@@ -66,7 +66,4 @@ abstract class SimpleBankAccountTest {
     void testNegativeWithdraw() {
         assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(accountHolder.id(), -TEST_AMOUNT));
     }
-
-    @BeforeEach
-    public abstract void init();
 }
